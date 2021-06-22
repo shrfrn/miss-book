@@ -9,6 +9,7 @@ export const bookService = {
     save,
     addReview,
     removeReview,
+    addGoogleBook,
 }
 
 // Books
@@ -57,6 +58,29 @@ function removeReview(bookId, reviewId){
              book.reviews.splice(reviewIdx, 1)
              return storageService.put(MISS_BOOK, book)
         })
+}
+
+// Google
+
+function addGoogleBook(googleBook) {
+
+    let {title, subtitle, language, pageCount} = googleBook.volumeInfo
+    let authors = googleBook.volumeInfo.authors
+    let categories = googleBook.volumeInfo.categories
+
+    let newBook = {
+        id: null,
+        thumbnail: (!googleBook.volumeInfo.imageLinks) ? '' : googleBook.volumeInfo.imageLinks.thumbnail,
+        publishedDate: new Date(googleBook.volumeInfo.publishedDate).getUTCFullYear(),
+        listPrice: {currencyCode: 'USD', amount: 100, isOnSale: false },
+        title,
+        subtitle,
+        language,
+        pageCount,
+        authors,
+        categories,
+    }
+    save(newBook)
 }
 
 // Data

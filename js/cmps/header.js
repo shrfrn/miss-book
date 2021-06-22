@@ -10,6 +10,7 @@ export default
         <div class="navbar-links">
             <router-link :to="'/'">Home</router-link>
             <router-link :to="'/book'">Store</router-link>
+            <router-link :to="'/find-book'">Search</router-link>
             <router-link :to="'/about'">About</router-link>
         </div>
     </header>

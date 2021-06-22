@@ -57,12 +57,16 @@ export default {
                     <input type="submit">
                 </form>
             </section>
+            <router-link :to="'/book/' + prevBookId">Prev Book</router-link>
+            <router-link :to="'/book/' + nextBookId">Next Book</router-link>
         </section>
         
     `,
     data() {
         return {
             book: null,
+            nextBookId: null,
+            prevBookId: null,
             review: {
                 id: '',
                 userName: '',
@@ -90,7 +94,7 @@ export default {
                     eventBus.$emit('show-msg', msg)
                 })
         },
-},
+    },
 
     computed: {
         readLength(){
@@ -127,17 +131,29 @@ export default {
                     return {nis: true}
             }
         }
-},
+    },
 
     components: {
         longText,
         reviewList,
     },
 
+    watch: {
+        '$route.params.bookId' : {
+            immediate: true,
+            handler() {
+                const { bookId } = this.$route.params
+                bookService.getById(bookId)
+                    .then(book => this.book = book)
+                bookService.getNextBookId(bookId)
+                    .then(book => this.nextBookId = book)
+                bookService.getPrevBookId(bookId)
+                    .then(book => this.prevBookId = book)
+
+            }
+        }
+    },
     created() {
-        const { bookId } = this.$route.params
-        bookService.getById(bookId)
-            .then(book => this.book = book)
     },
     mounted(){
         // let elUserName = this.$refs.userName

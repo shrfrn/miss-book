@@ -7,7 +7,7 @@ export default
     template:`
         <section class="find-book app-main">
             <h2>Search Google Books...</h2>
-            <input type="text" placeholder="type here...">
+            <input type="text" v-model="queryStr" placeholder="type here...">
             <button @click="getBooks">Search</button>
 
             <google-book-list v-if="googleBooks" :googleBooks="googleBooks"/>
@@ -15,17 +15,15 @@ export default
     `,
     data() {
         return {
+            queryStr: '',
             googleBooks: null,
         }
     },
     methods: {
         getBooks(){
-            console.log('getBooks...');
-            googleBooks.query()
+            googleBooks.query(this.queryStr)
                 .then(books => {
-                    this.googleBooks = books
-                    console.log(this.googleBooks);
-                    // this.googleBooks = books.data.items
+                    this.googleBooks = books.data.items
                 })
         }
     },

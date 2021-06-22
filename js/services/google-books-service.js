@@ -5,7 +5,6 @@ export const googleBooks = {
 }
 
 function query(queryStr){
-    // return axios.get(`https://www.googleapis.com/books/v1/volumes?printType=books&q=effective%20javascript`)
-    return storageService.query('googleBooks')
+    return axios.get(`https://www.googleapis.com/books/v1/volumes?printType=books&q=${queryStr}`)
 }
 

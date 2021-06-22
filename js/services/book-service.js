@@ -5,6 +5,8 @@ const MISS_BOOK = 'missBook'
 export const bookService = {
     query,
     getById,
+    getNextBookId,
+    getPrevBookId,
     remove,
     save,
     addReview,
@@ -20,6 +22,24 @@ function query(){
 
 function getById(bookId){
     return storageService.get(MISS_BOOK, bookId)
+  }
+  
+function getNextBookId(bookId) {
+    return query()
+        .then(books => {
+            const idx = books.findIndex(book => book.id === bookId)
+            if (idx === (books.length -1)) return books[0].id 
+            return books[idx + 1].id
+        })
+}
+  
+function getPrevBookId(bookId) {
+    return query()
+        .then(books => {
+            const idx = books.findIndex(book => book.id === bookId)
+            if (idx === 0) return books[books.length - 1].id
+            return books[idx - 1].id
+        })
 }
 
 function remove(bookId){
@@ -64,7 +84,7 @@ function removeReview(bookId, reviewId){
 
 function addGoogleBook(googleBook) {
 
-    let {title, subtitle, language, pageCount} = googleBook.volumeInfo
+    let {title, subtitle, language, pageCount, description} = googleBook.volumeInfo
     let authors = googleBook.volumeInfo.authors
     let categories = googleBook.volumeInfo.categories
 
@@ -77,6 +97,7 @@ function addGoogleBook(googleBook) {
         subtitle,
         language,
         pageCount,
+        description: description || '',
         authors,
         categories,
     }
